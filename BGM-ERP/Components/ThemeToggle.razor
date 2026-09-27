@@ -1,0 +1,35 @@
+@using BGM_ERP.Services
+@using Microsoft.JSInterop
+@inject ThemeService ThemeService
+@inject IJSRuntime JS
+@implements IDisposable
+
+<button @onclick="ToggleTheme" class="navbar-icon-btn theme-toggle" title="Toggle Theme">
+    @if (ThemeService.IsDarkMode)
+    {
+        <span>☀️</span>
+    }
+    else
+    {
+        <span>🌙</span>
+    }
+</button>
+
+@code {
+    protected override void OnInitialized()
+    {
+        ThemeService.OnThemeChanged += StateHasChanged;
+        ThemeService.Initialize(JS);
+    }
+
+    private void ToggleTheme()
+    {
+        ThemeService.ToggleTheme();
+        StateHasChanged();
+    }
+
+    void IDisposable.Dispose()
+    {
+        ThemeService.OnThemeChanged -= StateHasChanged;
+    }
+}

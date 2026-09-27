@@ -1,0 +1,183 @@
+@page "/"
+@using BGM_ERP.Services
+@inject ThemeService ThemeService
+
+<div class="container-fluid">
+    <h1 class="mb-4">Welcome to BGM-ERP</h1>
+
+    <div class="row">
+        <!-- Stats Cards -->
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">📊 Total Companies</h5>
+                </div>
+                <div class="card-body">
+                    <h2 style="color: var(--primary-color); font-size: 36px;">45</h2>
+                    <p class="text-muted">Active companies</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">💳 Banks</h5>
+                </div>
+                <div class="card-body">
+                    <h2 style="color: #4CAF50; font-size: 36px;">12</h2>
+                    <p class="text-muted">Registered banks</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">🌍 Countries</h5>
+                </div>
+                <div class="card-body">
+                    <h2 style="color: #FF9800; font-size: 36px;">28</h2>
+                    <p class="text-muted">Operating regions</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">📦 Orders</h5>
+                </div>
+                <div class="card-body">
+                    <h2 style="color: #2196F3; font-size: 36px;">156</h2>
+                    <p class="text-muted">This month</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Access Cards -->
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="flex-gap-10" style="flex-wrap: wrap; gap: 10px;">
+                        <a href="/masters/company" class="btn btn-primary btn-sm">
+                            ➕ New Company
+                        </a>
+                        <a href="/masters/bank" class="btn btn-primary btn-sm">
+                            ➕ New Bank
+                        </a>
+                        <a href="/masters/country" class="btn btn-primary btn-sm">
+                            ➕ New Country
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">System Status</h5>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <span class="badge badge-success">✓</span>
+                        Server: Online
+                    </p>
+                    <p>
+                        <span class="badge badge-success">✓</span>
+                        Database: Connected
+                    </p>
+                    <p>
+                        <span class="badge badge-success">✓</span>
+                        Theme: @(ThemeService.IsDarkMode ? "Dark Mode" : "Light Mode")
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Recent Activities</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Company Updated</td>
+                                <td>Acme Minerals - Address Changed</td>
+                                <td>Today, 2:30 PM</td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>Bank Added</td>
+                                <td>State Bank of India - IFSC: SBIN0000001</td>
+                                <td>Today, 1:15 PM</td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>Country Created</td>
+                                <td>United Kingdom - Region ID: UK001</td>
+                                <td>Yesterday, 4:00 PM</td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>Order Placed</td>
+                                <td>Order #ORD-2024-001 - 500 tons minerals</td>
+                                <td>Yesterday, 10:30 AM</td>
+                                <td><span class="badge badge-warning">Pending</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container-fluid {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .col-md-3, .col-md-6, .col-md-12 {
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .text-muted {
+        opacity: 0.7;
+        font-size: 14px;
+    }
+
+    .flex-gap-10 {
+        display: flex;
+        gap: 10px;
+    }
+</style>
+
+@code {
+}

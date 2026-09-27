@@ -1,0 +1,124 @@
+@page "/masters/bank"
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header flex-gap-10 justify-between">
+            <h5 class="card-title">Banks</h5>
+            <button @onclick="OpenAddDialog" class="btn btn-primary btn-sm">
+                ➕ New Bank
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Search bank name..." @bind="searchText" @oninput="OnSearchChanged" />
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Bank Name</th>
+                            <th>IFSC Code</th>
+                            <th>Account Number</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var bank in filteredBanks)
+                        {
+                            <tr>
+                                <td>@bank.Name</td>
+                                <td>@bank.IFSCCode</td>
+                                <td>@bank.AccountNumber</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td>
+                                    <button class="btn btn-sm" @onclick="() => EditBank(bank)" style="background: none; border: none; color: #1E66C8; cursor: pointer;">✏️</button>
+                                    <button class="btn btn-sm" @onclick="() => DeleteBank(bank.Id)" style="background: none; border: none; color: #F44336; cursor: pointer;">🗑️</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @if (showDialog)
+    {
+        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+            <div style="background: var(--light-surface); border-radius: 8px; padding: 30px; max-width: 500px; width: 90%;">
+                <h4>@(editingBank != null && editingBank.Id > 0 ? "Edit Bank" : "New Bank")</h4>
+
+                <div class="form-group mt-3">
+                    <label class="form-label">Bank Name *</label>
+                    <input type="text" class="form-control" @bind="editingBank.Name" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">IFSC Code</label>
+                    <input type="text" class="form-control" @bind="editingBank.IFSCCode" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Account Number</label>
+                    <input type="text" class="form-control" @bind="editingBank.AccountNumber" />
+                </div>
+
+                <div class="flex-gap-10" style="margin-top: 20px;">
+                    <button class="btn btn-primary" @onclick="SaveBank">Save</button>
+                    <button class="btn btn-secondary" @onclick="CloseDialog">Cancel</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private List<BankModel> banks = new();
+    private List<BankModel> filteredBanks = new();
+    private BankModel editingBank;
+    private bool showDialog = false;
+    private string searchText = "";
+
+    protected override void OnInitialized()
+    {
+        banks = new()
+        {
+            new() { Id = 1, Name = "State Bank of India", IFSCCode = "SBIN0000001", AccountNumber = "1234567890" },
+            new() { Id = 2, Name = "ICICI Bank", IFSCCode = "ICIC0000001", AccountNumber = "0987654321" },
+            new() { Id = 3, Name = "HDFC Bank", IFSCCode = "HDFC0000001", AccountNumber = "1111111111" },
+        };
+        FilterBanks();
+    }
+
+    private void FilterBanks()
+    {
+        filteredBanks = banks.Where(b => b.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase)).ToList();
+    }
+
+    private void OnSearchChanged() => FilterBanks();
+    private void OpenAddDialog() { editingBank = new(); showDialog = true; }
+    private void EditBank(BankModel bank) { editingBank = new() { Id = bank.Id, Name = bank.Name, IFSCCode = bank.IFSCCode, AccountNumber = bank.AccountNumber }; showDialog = true; }
+
+    private void SaveBank()
+    {
+        if (editingBank.Id == 0)
+        {
+            editingBank.Id = banks.Max(b => b.Id) + 1;
+            banks.Add(editingBank);
+        }
+        else
+        {
+            var existing = banks.FirstOrDefault(b => b.Id == editingBank.Id);
+            if (existing != null) { existing.Name = editingBank.Name; existing.IFSCCode = editingBank.IFSCCode; existing.AccountNumber = editingBank.AccountNumber; }
+        }
+        FilterBanks();
+        CloseDialog();
+    }
+
+    private void DeleteBank(int id) { banks.RemoveAll(b => b.Id == id); FilterBanks(); }
+    private void CloseDialog() { showDialog = false; editingBank = null; }
+
+    public class BankModel { public int Id { get; set; } public string Name { get; set; } = ""; public string IFSCCode { get; set; } = ""; public string AccountNumber { get; set; } = ""; }
+}

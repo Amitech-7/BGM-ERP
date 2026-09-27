@@ -1,0 +1,125 @@
+@page "/masters/country"
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header flex-gap-10 justify-between">
+            <h5 class="card-title">Countries</h5>
+            <button @onclick="OpenAddDialog" class="btn btn-primary btn-sm">
+                ➕ New Country
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Search country..." @bind="searchText" @oninput="OnSearchChanged" />
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Country Name</th>
+                            <th>Code</th>
+                            <th>Currency</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var country in filteredCountries)
+                        {
+                            <tr>
+                                <td>@country.Name</td>
+                                <td>@country.Code</td>
+                                <td>@country.Currency</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td>
+                                    <button class="btn btn-sm" @onclick="() => EditCountry(country)" style="background: none; border: none; color: #1E66C8; cursor: pointer;">✏️</button>
+                                    <button class="btn btn-sm" @onclick="() => DeleteCountry(country.Id)" style="background: none; border: none; color: #F44336; cursor: pointer;">🗑️</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @if (showDialog)
+    {
+        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+            <div style="background: var(--light-surface); border-radius: 8px; padding: 30px; max-width: 500px; width: 90%;">
+                <h4>@(editingCountry != null && editingCountry.Id > 0 ? "Edit Country" : "New Country")</h4>
+
+                <div class="form-group mt-3">
+                    <label class="form-label">Country Name *</label>
+                    <input type="text" class="form-control" @bind="editingCountry.Name" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Country Code</label>
+                    <input type="text" class="form-control" @bind="editingCountry.Code" maxlength="3" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Currency</label>
+                    <input type="text" class="form-control" @bind="editingCountry.Currency" />
+                </div>
+
+                <div class="flex-gap-10" style="margin-top: 20px;">
+                    <button class="btn btn-primary" @onclick="SaveCountry">Save</button>
+                    <button class="btn btn-secondary" @onclick="CloseDialog">Cancel</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private List<CountryModel> countries = new();
+    private List<CountryModel> filteredCountries = new();
+    private CountryModel editingCountry;
+    private bool showDialog = false;
+    private string searchText = "";
+
+    protected override void OnInitialized()
+    {
+        countries = new()
+        {
+            new() { Id = 1, Name = "India", Code = "IND", Currency = "INR" },
+            new() { Id = 2, Name = "United States", Code = "USA", Currency = "USD" },
+            new() { Id = 3, Name = "United Kingdom", Code = "GBR", Currency = "GBP" },
+            new() { Id = 4, Name = "Canada", Code = "CAN", Currency = "CAD" },
+        };
+        FilterCountries();
+    }
+
+    private void FilterCountries()
+    {
+        filteredCountries = countries.Where(c => c.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase)).ToList();
+    }
+
+    private void OnSearchChanged() => FilterCountries();
+    private void OpenAddDialog() { editingCountry = new(); showDialog = true; }
+    private void EditCountry(CountryModel country) { editingCountry = new() { Id = country.Id, Name = country.Name, Code = country.Code, Currency = country.Currency }; showDialog = true; }
+
+    private void SaveCountry()
+    {
+        if (editingCountry.Id == 0)
+        {
+            editingCountry.Id = countries.Max(c => c.Id) + 1;
+            countries.Add(editingCountry);
+        }
+        else
+        {
+            var existing = countries.FirstOrDefault(c => c.Id == editingCountry.Id);
+            if (existing != null) { existing.Name = editingCountry.Name; existing.Code = editingCountry.Code; existing.Currency = editingCountry.Currency; }
+        }
+        FilterCountries();
+        CloseDialog();
+    }
+
+    private void DeleteCountry(int id) { countries.RemoveAll(c => c.Id == id); FilterCountries(); }
+    private void CloseDialog() { showDialog = false; editingCountry = null; }
+
+    public class CountryModel { public int Id { get; set; } public string Name { get; set; } = ""; public string Code { get; set; } = ""; public string Currency { get; set; } = ""; }
+}

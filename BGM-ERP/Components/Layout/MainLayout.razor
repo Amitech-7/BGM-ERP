@@ -1,0 +1,78 @@
+﻿@inherits LayoutComponentBase
+@using BGM_ERP.Services
+@inject ThemeService ThemeService
+
+<div class="app-container @(ThemeService.IsDarkMode ? "dark-theme" : "light-theme")">
+    <!-- Navbar Header -->
+    <div class="navbar-header">
+        <div class="navbar-left">
+            <button @onclick="ToggleSidebar" class="navbar-icon-btn" title="Toggle Sidebar">
+                ☰
+            </button>
+            <a class="navbar-brand" href="/">
+                💎 BGM-ERP
+            </a>
+            <div class="navbar-search">
+                <input type="text" placeholder="Search..." />
+            </div>
+        </div>
+
+        <div class="navbar-right">
+            <button class="navbar-icon-btn" title="Notifications">
+                🔔
+                <span class="navbar-badge">5</span>
+            </button>
+            <ThemeToggle @ref="themeToggle" />
+            <button class="navbar-icon-btn" title="User Profile">
+                👤
+            </button>
+        </div>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar-section @(sidebarCollapsed ? "collapsed" : "")">
+        <Sidebar />
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content-wrapper">
+        <div class="content-area">
+            @Body
+        </div>
+    </div>
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>
+
+@code {
+    private bool sidebarCollapsed = false;
+    private ThemeToggle? themeToggle;
+
+    protected override void OnInitialized()
+    {
+        ThemeService.OnThemeChanged += OnThemeChanged;
+        UpdateBodyClass();
+    }
+
+    private void ToggleSidebar()
+    {
+        sidebarCollapsed = !sidebarCollapsed;
+        StateHasChanged();
+    }
+
+    private void OnThemeChanged()
+    {
+        UpdateBodyClass();
+        StateHasChanged();
+    }
+
+    private void UpdateBodyClass()
+    {
+        var isDark = ThemeService.IsDarkMode;
+        // This updates the app-container, but we should also update document body for global CSS
+    }
+}

@@ -1,0 +1,219 @@
+/* Professional Blue Primary Color: RGB(30, 102, 200) */
+:root {
+    --primary-color: rgb(30, 102, 200);
+    --primary-hover: rgb(25, 85, 170);
+    --primary-light: rgba(30, 102, 200, 0.1);
+
+    /* Light Mode Colors */
+    --light-bg: #FAFAFA;
+    --light-surface: #FFFFFF;
+    --light-sidebar: #F5F5F5;
+    --light-text: #333333;
+    --light-text-secondary: #666666;
+    --light-border: #E0E0E0;
+    --light-hover: #F0F0F0;
+
+    /* Dark Mode Colors */
+    --dark-bg: #1A1A1A;
+    --dark-surface: #2D2D2D;
+    --dark-sidebar: #2D2D2D;
+    --dark-text: #E8E8E8;
+    --dark-text-secondary: #B0B0B0;
+    --dark-border: #454545;
+    --dark-hover: #3D3D3D;
+
+    /* Neutral Colors */
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --error: #F44336;
+    --info: var(--primary-color);
+}
+
+/* Light Theme (Default) */
+body.light-theme {
+    background-color: var(--light-bg);
+    color: var(--light-text);
+}
+
+body.light-theme .app-container {
+    background-color: var(--light-bg);
+}
+
+body.light-theme .sidebar {
+    background-color: var(--light-sidebar);
+    border-right: 1px solid var(--light-border);
+}
+
+body.light-theme .navbar {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+body.light-theme .nav-link {
+    color: var(--light-text);
+}
+
+body.light-theme .nav-link:hover {
+    background-color: var(--light-hover);
+}
+
+body.light-theme .nav-link.active {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+body.light-theme .content-area {
+    background-color: var(--light-bg);
+}
+
+body.light-theme .card {
+    background-color: var(--light-surface);
+    border: 1px solid var(--light-border);
+}
+
+body.light-theme .input-field,
+body.light-theme input,
+body.light-theme textarea,
+body.light-theme select {
+    background-color: var(--light-surface);
+    color: var(--light-text);
+    border: 1px solid var(--light-border);
+}
+
+body.light-theme .table {
+    color: var(--light-text);
+}
+
+body.light-theme .table thead {
+    background-color: var(--light-sidebar);
+    color: var(--light-text);
+}
+
+body.light-theme .table tbody tr:hover {
+    background-color: var(--light-hover);
+}
+
+/* Dark Theme */
+body.dark-theme {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+}
+
+body.dark-theme .app-container {
+    background-color: var(--dark-bg);
+}
+
+body.dark-theme .sidebar {
+    background-color: var(--dark-sidebar);
+    border-right: 1px solid var(--dark-border);
+}
+
+body.dark-theme .navbar {
+    background-color: #1E1E1E;
+    color: white;
+}
+
+body.dark-theme .nav-link {
+    color: var(--dark-text);
+}
+
+body.dark-theme .nav-link:hover {
+    background-color: var(--dark-hover);
+}
+
+body.dark-theme .nav-link.active {
+    background-color: rgba(30, 102, 200, 0.2);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+body.dark-theme .content-area {
+    background-color: var(--dark-bg);
+}
+
+body.dark-theme .card {
+    background-color: var(--dark-surface);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme .input-field,
+body.dark-theme input,
+body.dark-theme textarea,
+body.dark-theme select {
+    background-color: var(--dark-surface);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme .table {
+    color: var(--dark-text);
+}
+
+body.dark-theme .table thead {
+    background-color: var(--dark-hover);
+    color: var(--dark-text);
+}
+
+body.dark-theme .table tbody tr:hover {
+    background-color: var(--dark-hover);
+}
+
+/* Global Styles */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+
+/* Badge Styles */
+.badge-success {
+    background-color: var(--success);
+}
+
+.badge-warning {
+    background-color: var(--warning);
+}
+
+.badge-error {
+    background-color: var(--error);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb {
+    background: #B0BEC5;
+    border-radius: 4px;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb:hover {
+    background: #78909C;
+}
+
+body.dark-theme ::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+}
+
+body.dark-theme ::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}

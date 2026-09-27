@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="BGM-ERP.API/BGM-ERP.API.csproj" />
+  <Project Path="BGM-ERP.Core/BGM-ERP.Core.csproj" />
+  <Project Path="BGM-ERP.Infrastructure/BGM-ERP.Infrastructure.csproj" />
+  <Project Path="BGM-ERP/BGM-ERP.Web.csproj" />
+</Solution>
